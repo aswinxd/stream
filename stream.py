@@ -19,7 +19,7 @@ bot = Client("music_bot", api_id=API_ID, api_hash=API_HASH, bot_token=BOT_TOKEN)
 genius = lyricsgenius.Genius("your_genius_api_key")
 
 # MongoDB configuration
-MONGO_URI = "mongodb://localhost:27017/"
+MONGO_URI = "mongodb://root:HQVDEobjkX37W8FFZer2m0VbsNa1f6M0yqXQN8s3qn3d78w7Jv7LYtOfj5ZzeKJR@104.251.216.208:9003/?directConnection=true"
 DB_NAME = "telegram_bot"
 COLLECTION_NAME = "sessions"
 
