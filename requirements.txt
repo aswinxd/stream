@@ -1,4 +1,4 @@
 pyrogram==2.0.106
 tgcrypto==1.2.5
-pytgcalls==2.1.0
-tgcalls==2.0.0
+pytgcalls==0.0.24
+tgcalls==0.0.16
