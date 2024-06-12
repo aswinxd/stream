@@ -19,6 +19,8 @@ genius = lyricsgenius.Genius("your_genius_api_key")
 
 # Helper function to prompt for phone number and code
 #async def get_userbot_session():
+
+# Initialize userbot client and pytgcalls
 async def get_userbot_session():
     userbot = Client(":memory:", api_id=API_ID, api_hash=API_HASH)
     await userbot.connect()
@@ -42,8 +44,9 @@ async def main():
     await pytgcalls.start()
     print("Userbot and PyTgCalls started successfully!")
     
-# Initialize userbot client and pytgcalls
-
+    # Add your further code logic here
+    
+    await userbot.idle()  #
 
 # Global variables to manage state
 queues = {}
