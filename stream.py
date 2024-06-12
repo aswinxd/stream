@@ -4,6 +4,7 @@ import string
 import time
 import os
 from pyrogram import Client, filters
+from pyrogram.errors import SessionPasswordNeeded
 from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 from pytgcalls import PyTgCalls
 from pytgcalls.types.input_stream import InputAudioStream, InputStream
@@ -17,16 +18,21 @@ bot = Client("music_bot", api_id=API_ID, api_hash=API_HASH, bot_token=BOT_TOKEN)
 # Initialize Lyrics Genius API
 genius = lyricsgenius.Genius("your_genius_api_key")
 
-# Helper function to prompt for phone number and code
 async def get_userbot_session():
     userbot = Client(":memory:", api_id=API_ID, api_hash=API_HASH)
     await userbot.connect()
-    phone_number = input("Enter your phone number: ")
-    sent_code = await userbot.send_code(phone_number)
-    code = input("Enter the code you received: ")
-    await userbot.sign_in(phone_number, sent_code.phone_code_hash, code)
-    session_string = await userbot.export_session_string()
-    await userbot.disconnect()
+    try:
+        phone_number = input("Enter your phone number: ")
+        sent_code = await userbot.send_code(phone_number)
+        code = input("Enter the code you received: ")
+        await userbot.sign_in(phone_number, sent_code.phone_code_hash, code)
+        session_string = await userbot.export_session_string()
+    except SessionPasswordNeeded:
+        password = input("Enter your password: ")
+        await userbot.check_password(password)
+        session_string = await userbot.export_session_string()
+    finally:
+        await userbot.disconnect()
     return session_string
 
 async def main():
@@ -138,7 +144,7 @@ async def main():
 
     # Run the bot
     await bot.start()
-    await bot.idle()
+    await asyncio.Event().wait()
 
 # Run the main function
 if __name__ == "__main__":
