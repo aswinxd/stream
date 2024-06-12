@@ -6,22 +6,22 @@ from pyrogram.errors import SessionPasswordNeeded
 from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 from pytgcalls import PyTgCalls
 from pytgcalls.types.input_stream import InputAudioStream, InputStream
-from config import API_ID, API_HASH, BOT_TOKEN, DURATION_LIMIT
 from youtubesearchpython import VideosSearch
-import lyricsgenius
 from pymongo import MongoClient
-from bson.objectid import ObjectId
+
+# Configurations
+API_ID = "12799559"
+API_HASH = "077254e69d93d08357f25bb5f4504580"
+BOT_TOKEN = "1810353153:AAFgQfh_bs0mO1nGRCmCexywpIbC2BqDe_o"
+DURATION_LIMIT = 60  # in minutes
 
 # Initialize the bot client
 bot = Client("music_bot", api_id=API_ID, api_hash=API_HASH, bot_token=BOT_TOKEN)
 
-# Initialize Lyrics Genius API
-genius = lyricsgenius.Genius("your_genius_api_key")
-
 # MongoDB configuration
 MONGO_URI = "mongodb://root:HQVDEobjkX37W8FFZer2m0VbsNa1f6M0yqXQN8s3qn3d78w7Jv7LYtOfj5ZzeKJR@104.251.216.208:9003/?directConnection=true"
 DB_NAME = "telegram_bot"
-COLLECTION_NAME = "sessions"
+COLLECTION_NAME = "andi"
 
 client = MongoClient(MONGO_URI)
 db = client[DB_NAME]
@@ -146,12 +146,7 @@ async def main():
     async def lyrics_callback(client, callback_query):
         chat_id = int(callback_query.data.split("_")[1])
         if chat_id in queues and queues[chat_id]:
-            title = queues[chat_id][0]["title"]
-            song = genius.search_song(title)
-            if song:
-                await bot.send_message(chat_id, f"**Lyrics for {title}**\n\n{song.lyrics}")
-            else:
-                await bot.send_message(chat_id, "Lyrics not found.")
+            await bot.send_message(chat_id, "Lyrics functionality is disabled.")
         last_activity[chat_id] = time.time()
 
     # Start auto leave task
