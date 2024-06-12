@@ -30,11 +30,26 @@ async def get_userbot_session():
     return session_string
 
 # Get userbot session string
+#USERBOT_SESSION = asyncio.run(get_userbot_session())
+async def get_userbot_session():
+    userbot = Client(":memory:", api_id=API_ID, api_hash=API_HASH)
+    await userbot.connect()
+    phone_number = input("Enter your phone number: ")
+    sent_code = await userbot.send_code(phone_number)
+    code = input("Enter the code you received: ")
+    await userbot.sign_in(phone_number, sent_code.phone_code_hash, code)
+    session_string = await userbot.export_session_string()
+    await userbot.disconnect()
+    return session_string
+
+# Get userbot session string
 USERBOT_SESSION = asyncio.run(get_userbot_session())
 
 # Initialize userbot client and pytgcalls
 userbot = Client("userbot", api_id=API_ID, api_hash=API_HASH, session_string=USERBOT_SESSION)
 pytgcalls = PyTgCalls(userbot)
+# Initialize userbot client and pytgcalls
+
 
 # Global variables to manage state
 queues = {}
